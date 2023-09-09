@@ -29,6 +29,11 @@ module.exports = {
 				"dark-green-s": "rgb(44 187 93)",
 				"dark-blue-s": "rgb(10 132 255)",
 			},
+			theme: {
+				fontFamily: {
+					'Dm-sans': "Dm Sans"
+				}
+			}
 		},
 	},
 	plugins: [],
