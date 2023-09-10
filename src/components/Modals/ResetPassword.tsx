@@ -1,10 +1,35 @@
-import React from "react";
+import { authModalState } from "@/atoms/authModalAtom";
+import { auth } from "@/firebase/firebase";
+import React, { useState, useEffect } from "react";
+import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
+import { useSetRecoilState } from "recoil";
 
 type Props = {};
 
 function ResetPassword({}: Props) {
+  const [email, setEmail] = useState("");
+
+  const [sendPasswordResetEmail, sending, error] =
+    useSendPasswordResetEmail(auth);
+
+  const setAuthModalState = useSetRecoilState(authModalState);
+
+  const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const success = await sendPasswordResetEmail(email);
+      setAuthModalState({ isOpen: true, type: "login" });
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (error) alert(error.message);
+  }, [error]);
+
   return (
-    <form className="space-y-6 px-6 pb-4">
+    <form className="space-y-6 px-6 pb-4" onSubmit={handleForgotPassword}>
       <h3 className="text-xl font-medium text-white">Reset Password</h3>
 
       <p className="text-sm text-zinc-200">
@@ -20,6 +45,8 @@ function ResetPassword({}: Props) {
           Your Email
         </label>
         <input
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
           type="email"
           name="email"
           id="email"
@@ -34,7 +61,7 @@ function ResetPassword({}: Props) {
         type="submit"
         className="w-full text-white focus:ring-lue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s"
       >
-        Reset Password
+        {sending ? "Sending..." : "Reset Password"}
       </button>
     </form>
   );
