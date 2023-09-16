@@ -4,6 +4,8 @@ import { authModalState } from "@/atoms/authModalAtom";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebase";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type LoginProps = {};
 
@@ -34,7 +36,7 @@ const Login: React.FC<LoginProps> = () => {
   const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (!inputs.email || !inputs.password)
-      return alert("Please fill all details");
+      return toast.error("please fill all details");
 
     try {
       const user = await signInWithEmailAndPassword(
@@ -47,13 +49,14 @@ const Login: React.FC<LoginProps> = () => {
       }
 
       router.push("/");
+      toast.success("Signed in successfully");
     } catch (error: any) {
-      alert(error.message);
+      toast.error("Invalid Credentials");
     }
   };
 
   useEffect(() => {
-    if (error) alert(error?.message);
+    if (error) toast.error("Invalid Credentials");
   }, [error]);
 
   console.log(inputs);

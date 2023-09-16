@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebase";
+import { toast } from "react-toastify";
 
 type LogoutProps = {};
 
@@ -11,7 +12,7 @@ const Logout: React.FC<LogoutProps> = () => {
   const handleLogout = async () => {
     try {
       const success = await signOut();
-      //   if (success) alert("Signed Out Successfully");
+      if (success) return toast.success("Signed Out Successfully");
     } catch (error: any) {
       alert(error.message);
     }

@@ -6,6 +6,7 @@ import { AiFillYoutube } from "react-icons/ai";
 import Link from "next/link";
 import { IoClose } from "react-icons/io5";
 import YouTube from "react-youtube";
+import "react-toastify/dist/ReactToastify.css";
 
 type ProblemsTableProps = {};
 
